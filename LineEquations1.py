@@ -212,10 +212,26 @@ class guessgraph:
 
 
 def geteq():
-    userin=input("The equation of the red line could be:")
-    #####Change this later to better parse input  call itself if not good input
-    userin2="".join(userin.split())
-    return [int(userin2[3:]),userin]
+    errortext=f"Equations should follow the format\n      y = x + b    or    y = x - b\nwhere b is an integer between 1 and 10."
+    while True:
+        userin=input("The equation of the red line could be:")
+        userin2="".join(userin.split())
+        userin2=userin2.lower()
+        if userin2[:3]!= "y=x":
+            print(errortext)
+            continue
+        if userin2[3]!="+" and userin2[3]!="-":
+            print(errortext)
+            continue
+        b=userin2[4:]
+        if not b.isnumeric():
+            print(errortext)
+            continue
+        b=int(userin2[3:])
+        if not (-10<=b<=-1 or 1<=b<=10):
+            print(errortext)
+            continue
+        return b,userin
 
 def getagain():
     ans=input("Do you want to start a new challenge? Type y or n:")
@@ -239,8 +255,9 @@ text1="This is a graph of "+ pe + ".\n\nAll of the points on this line\nhave the
                  \nfor example, (1,1) and (-3,-3)."
 text2="If we move the line up or down,\nthe x- and y-coordinates of the points are no longer the same.\
                  \n\nThis means that the equation of the new line cannot be "+ pe +"."
-text3="The equation changes by adding or subtracting a number from x.\
+text3="The equation changes by " + r"$\bf{"+ 'adding' +"}$" +" or "+ r"$\bf{"+ 'subtracting' +"}$" + " a number from x.\
                  \n\nClose this graph window when you are ready to move on."
+
 
 g1=intrograph()
 g1.show()
