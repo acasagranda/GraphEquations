@@ -212,9 +212,10 @@ class guessgraph:
 
 
 def geteq():
-    errortext=f"Equations should follow the format\n      y = x + b    or    y = x - b\nwhere b is an integer between 1 and 10."
+    errortext=f"Equations should follow the format\n      y = x + b    or    y = x - b\nwhere b is an integer between 1 and 10.\n"
     while True:
         userin=input("The equation of the red line could be:")
+        print("\n")
         userin2="".join(userin.split())
         userin2=userin2.lower()
         if userin2[:3]!= "y=x":

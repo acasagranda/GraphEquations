@@ -65,7 +65,7 @@ class intrograph:
         self.ax1.plot(x, y,c='k',lw=1.5, label = pe)
         self.ax2.plot(x, 3*x,c='b',lw=1.5, label="y = 3x")
         self.ax2.plot(x, y,c='k',lw=1.5, label=pe)
-        self.ax2.plot(x, x*.5,c='m',lw=1.5, label="y = (1/2)x")
+        self.ax2.plot(x, x*.5,c='m',lw=1.5, label="y = 1/2 x")
 
         #set up legend
         self.ax1.legend(loc="lower right")
@@ -211,15 +211,51 @@ class guessgraph:
 
 
 
-def geteq():
-    userin=input("The equation of the red line could be:")
-    #####Change this later to better parse input  call itself if not good input
-    userin2="".join(userin.split())
+# def geteq():
+#     userin=input("The equation of the red line could be:")
+#     #####Change this later to better parse input  call itself if not good input
+#     userin2="".join(userin.split())
 
-    if "(" in userin2:
-        a=int(userin2[5])
-        return [1/a,userin]
-    return [int(userin2[2]),userin]
+#     if "(" in userin2:
+#         a=int(userin2[5])
+#         return [1/a,userin]
+#     return [int(userin2[2]),userin]
+
+
+def geteq():
+    errortext=f"Equations should follow the format\n      y = ax     or    y = 1/a x\nwhere a is an integer between 2 and 8.\n"
+    while True:
+        userin=input("The equation of the red line could be:")
+        print("\n")
+        userin2="".join(userin.split())
+        userin2=userin2.lower()
+        if userin2[:2]!= "y=":
+            print(errortext)
+            continue
+        if not userin2[2].isnumeric() or int(userin2[2])<1 or int(userin2[2])>8:
+            print(errortext)
+            continue
+        if int(userin2[2])!=1:
+            m=int(userin2[2])
+            if userin2[3]!="x" or userin2[4:]!="":
+                print(errortext)
+                continue
+            return m, userin
+        else:
+            if userin2[3]!="/":
+                print(errortext)
+                continue
+            if not userin2[4].isnumeric() or int(userin2[4])<2 or int(userin2[4])>8:
+                print(errortext)
+                continue
+            m=1/int(userin2[4])
+            if userin2[5]!="x" or userin2[6:]!="":
+                print(errortext)
+                continue
+            return m, userin
+
+       
+    
 
 def getagain():
     ans=input("Do you want to start a new challenge? Type y or n:")
@@ -241,7 +277,7 @@ colors=['darkviolet','blue','deepskyblue','lime','yellow','orange']
 pe="y = x"
 text1="This is a graph of "+ pe + ".\n\nAll of the points on this line\nhave the same x-coordinate and y-coordinate;\
                  \nfor example, (1,1) and (-3,-3)."
-text2="If we tilt the line,\nthe x- and y-coordinates of the points are no longer the same.\
+text2="If we tilt the line about the origin,\nthe x- and y-coordinates of the points are no longer the same.\
                  \n\nThis means that the equation of the new line cannot be "+ pe +"."
 text3="The equation changes by multiplying x by a number.\
                  \n\nClose this graph window when you are ready to move on."
@@ -257,7 +293,7 @@ m2=random.choice(list1)
 
 mlist=[1/m2,m1]
 targeteq1="y = "+str(m1)+"x"
-targeteq2="y = (1/"+str(m2)+")x"
+targeteq2="y = 1/"+str(m2)+"x"
 
 targeteqlist=[targeteq2,targeteq1]
 
@@ -268,8 +304,7 @@ text2="\n\nYour task is to find the equation of the "+ r"$\bf{"+ 'red' +"}$" + f
                       \nand then use the result to get closer and closer\
                       \nuntil you find the red line\'s equaton.\
                       \n\nThe equation used in this puzzle will either look like\
-                      \ny = ax or y=(1/a)x where a is an integer between 1 and 8.\
-                      \nBe sure to use parenthesis around fractions.\
+                      \ny = ax or y=1/a x where a is an integer between 2 and 8.\
                       \n\n\nWhen you have your guess,\
                       \nclose the graph window and enter it into the terminal."
 again=True
