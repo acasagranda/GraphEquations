@@ -8,7 +8,7 @@ class intrograph:
     def __init__(self):
 
         #make two columns of graphs
-        self.fig, (self.ax1,self.ax2) = plt.subplots(1,2,figsize=(12,12))
+        self.fig, (self.ax1,self.ax2) = plt.subplots(1,2,figsize=(11,11))
 
         #set up size of graphs
         self.axisdim = 9
@@ -75,7 +75,7 @@ class intrograph:
         self.ax2.legend(loc="lower right")
 
         #set up text
-        self.ax1.text(-9,10.5,text1)
+        self.ax1.text(-9,11,text1)
         self.ax2.text(-9,10.5,text2)
         self.ax2.text(-9,-11.5,text3)
 
@@ -215,14 +215,42 @@ class guessgraph:
 
 
 def geteq():
-    userin=input("The equation of the red line could be:")
-    #####Change this later to better parse input  call itself if not good input
-    userin2="".join(userin.split())
-
-    if "(" in userin2:
-        a=int(userin2[6])
-        return [-1/a,userin]
-    return [int(userin2[2:4]),userin]
+    errortext=f"Equations should follow the format\n      y = -ax     or    y = -1/a x\nwhere a is an integer between 2 and 8.\n"
+    while True:
+        userin=input("The equation of the red line could be:")
+        print("\n")
+        userin2="".join(userin.split())
+        userin2=userin2.lower()
+        if len(userin2)<2 or userin2[:2]!= "y=":
+            print(errortext)
+            continue
+        if userin2[2]=='-':
+            sign=-1
+            idx=3
+        else:
+            sign=1
+            idx=2
+        if len(userin2)<idx+1 or not userin2[idx].isnumeric() or int(userin2[idx])<1 or int(userin2[idx])>8:
+            print(errortext)
+            continue
+        if int(userin2[idx])!=1:
+            m=sign*int(userin2[idx])
+            if len(userin2)<idx+2 or userin2[idx+1]!="x" or userin2[idx+2:]!="":
+                print(errortext)
+                continue
+            return m, userin
+        else:
+            if len(userin2)<idx+2 or userin2[idx+1]!="/":
+                print(errortext)
+                continue
+            if len(userin2)<idx+3 or not userin2[idx+2].isnumeric() or int(userin2[idx+2])<2 or int(userin2[idx+2])>8:
+                print(errortext)
+                continue
+            m=sign/int(userin2[idx+2])
+            if len(userin2)<idx+4 or userin2[idx+3]!="x" or userin2[idx+4:]!="":
+                print(errortext)
+                continue
+            return m, userin
 
 def getagain():
     ans=input("Do you want to start a new challenge? Type y or n:")
@@ -243,7 +271,8 @@ colors=['darkviolet','blue','deepskyblue','lime','yellow','orange']
 #set up parent equation and texts for intrograph
 pe="y = x"
 pe2="y = -x"
-text1="This is a graph of both "+ pe + " (black) and "+ pe2 + " (blue).\n\nAll of the points on the black line\nhave the same x-coordinate and y-coordinate;\
+text1="This is a graph of both "+ pe + " (black) \
+                \nand "+ pe2 + " (blue).\n\nAll of the points on the black line\nhave the same x-coordinate and y-coordinate;\
                  \nfor example, (1,1) and (-3,-3).\
                  \n\nIn all of the points on the blue line, \
                  \nthe y-coordinate has the opposite sign of the x-coordinate;\
@@ -274,8 +303,9 @@ text2="\n\nYour task is to find the equation of the "+ r"$\bf{"+ 'red' +"}$" + f
                       \nand then use the result to get closer and closer\
                       \nuntil you find the red line\'s equaton.\
                       \n\nThe equation used in this puzzle will either look like\
-                      \ny = -ax or y=-(1/a)x where a is an integer between 1 and 8.\
-                      \nBe sure to use parenthesis around fractions.\
+                      \ny = -ax or y=-1/a x where a is an integer between 2 and 8.\
+                      \n\n(The equation can be y=-c/a x for any c\
+                       \nbut we are limiting it to -1/a x for this puzzle.)\
                       \n\n\nWhen you have your guess,\
                       \nclose the graph window and enter it into the terminal."
 again=True

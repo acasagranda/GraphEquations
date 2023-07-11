@@ -212,16 +212,16 @@ class guessgraph:
 
 
 def geteq():
-    errortext=f"Equations should follow the format\n      y = x + b    or    y = x - b\nwhere b is an integer between 1 and 10.\n"
+    errortext=f"Equations should follow the format\n      y = x + b    or    y = x - b\nwhere b is an integer between 1 and 9.\n"
     while True:
         userin=input("The equation of the red line could be:")
         print("\n")
         userin2="".join(userin.split())
         userin2=userin2.lower()
-        if userin2[:3]!= "y=x":
+        if len(userin2)<3 or userin2[:3]!= "y=x":
             print(errortext)
             continue
-        if userin2[3]!="+" and userin2[3]!="-":
+        if len(userin2)<4 or (userin2[3]!="+" and userin2[3]!="-"):
             print(errortext)
             continue
         b=userin2[4:]
@@ -229,7 +229,7 @@ def geteq():
             print(errortext)
             continue
         b=int(userin2[3:])
-        if not (-10<=b<=-1 or 1<=b<=10):
+        if not (-9<=b<=-1 or 1<=b<=9):
             print(errortext)
             continue
         return b,userin
@@ -265,7 +265,7 @@ g1.show()
 
 
 #choose b of first and second target lines
-list1 = [4, 5, 6,7,8,9,10]
+list1 = [4, 5, 6,7,8,9]
 b1=random.choice(list1)
 b2=-random.choice(list1)
 blist=[b2,b1]
@@ -280,7 +280,7 @@ text2="\n\nYour task is to find the equation of the "+ r"$\bf{"+ 'red' +"}$" + f
                       \nand then use the result to get closer and closer\
                       \nuntil you find the red line\'s equaton.\
                       \n\nAll numbers used in the equation will be integers\
-                      \nbetween -10 and 10.\
+                      \nbetween -9 and 9.\
                       \n\nWhen you have your guess,\
                       \nclose the graph window and enter it into the terminal."
 again=True
@@ -291,9 +291,9 @@ while again:
         b=blist.pop()
         targeteq=targeteqlist.pop()
     else:
-        b=random.randrange(-10, 10)
+        b=random.randrange(-9, 9)
         while b==0:
-            b=random.randrange(-10, 10)
+            b=random.randrange(-9, 9)
         if b>0:
             targeteq="y = x + "+str(b)
         else:

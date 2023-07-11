@@ -211,16 +211,6 @@ class guessgraph:
 
 
 
-# def geteq():
-#     userin=input("The equation of the red line could be:")
-#     #####Change this later to better parse input  call itself if not good input
-#     userin2="".join(userin.split())
-
-#     if "(" in userin2:
-#         a=int(userin2[5])
-#         return [1/a,userin]
-#     return [int(userin2[2]),userin]
-
 
 def geteq():
     errortext=f"Equations should follow the format\n      y = ax     or    y = 1/a x\nwhere a is an integer between 2 and 8.\n"
@@ -229,27 +219,27 @@ def geteq():
         print("\n")
         userin2="".join(userin.split())
         userin2=userin2.lower()
-        if userin2[:2]!= "y=":
+        if len(userin2)<2 or userin2[:2]!= "y=":
             print(errortext)
             continue
-        if not userin2[2].isnumeric() or int(userin2[2])<1 or int(userin2[2])>8:
+        if len(userin2)<3 or not userin2[2].isnumeric() or int(userin2[2])<1 or int(userin2[2])>8:
             print(errortext)
             continue
         if int(userin2[2])!=1:
             m=int(userin2[2])
-            if userin2[3]!="x" or userin2[4:]!="":
+            if len(userin2)<4 or userin2[3]!="x" or userin2[4:]!="":
                 print(errortext)
                 continue
             return m, userin
         else:
-            if userin2[3]!="/":
+            if len(userin2)<4 or userin2[3]!="/":
                 print(errortext)
                 continue
-            if not userin2[4].isnumeric() or int(userin2[4])<2 or int(userin2[4])>8:
+            if len(userin2)<5 or not userin2[4].isnumeric() or int(userin2[4])<2 or int(userin2[4])>8:
                 print(errortext)
                 continue
             m=1/int(userin2[4])
-            if userin2[5]!="x" or userin2[6:]!="":
+            if len(userin2)<6 or userin2[5]!="x" or userin2[6:]!="":
                 print(errortext)
                 continue
             return m, userin
@@ -305,6 +295,8 @@ text2="\n\nYour task is to find the equation of the "+ r"$\bf{"+ 'red' +"}$" + f
                       \nuntil you find the red line\'s equaton.\
                       \n\nThe equation used in this puzzle will either look like\
                       \ny = ax or y=1/a x where a is an integer between 2 and 8.\
+                      \n\n(The equation can be y=c/a x for any c\
+                       \nbut we are limiting it to 1/a x for this puzzle.)\
                       \n\n\nWhen you have your guess,\
                       \nclose the graph window and enter it into the terminal."
 again=True
