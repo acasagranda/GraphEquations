@@ -68,7 +68,7 @@ class intrograph:
         self.ax2.plot(x, y,c='k',lw=1.5, label=pe)
         self.ax2.plot(x, -3*x,c='lime',lw=1.5, label="y = -3x")
         self.ax2.plot(x, -y,c='b',lw=1.5, label = pe2)
-        self.ax2.plot(x, -x*.5,c='m',lw=1.5, label="y = -(1/2)x")
+        self.ax2.plot(x, -x*.5,c='m',lw=1.5, label="y = -1/2 x")
 
         #set up legend
         self.ax1.legend(loc="lower right")
@@ -219,20 +219,28 @@ def geteq():
     while True:
         userin=input("The equation of the red line could be:")
         print("\n")
+        #take out spaces and make all lowercase
         userin2="".join(userin.split())
         userin2=userin2.lower()
+        #eq should start with y=
         if len(userin2)<2 or userin2[:2]!= "y=":
             print(errortext)
             continue
-        if userin2[2]=='-':
+        #check for negative or positive slope
+        if len(userin2)>2 and userin2[2]=='-':
             sign=-1
             idx=3
-        else:
+        elif len(userin2)>2:
             sign=1
             idx=2
+        else:
+            print(errortext)
+            continue
+        #first char of slope is number between 1 and 8 incl
         if len(userin2)<idx+1 or not userin2[idx].isnumeric() or int(userin2[idx])<1 or int(userin2[idx])>8:
             print(errortext)
             continue
+        #slope is not fraction
         if int(userin2[idx])!=1:
             m=sign*int(userin2[idx])
             if len(userin2)<idx+2 or userin2[idx+1]!="x" or userin2[idx+2:]!="":
@@ -240,6 +248,7 @@ def geteq():
                 continue
             return m, userin
         else:
+            #slope is fraction
             if len(userin2)<idx+2 or userin2[idx+1]!="/":
                 print(errortext)
                 continue
@@ -271,8 +280,8 @@ colors=['darkviolet','blue','deepskyblue','lime','yellow','orange']
 #set up parent equation and texts for intrograph
 pe="y = x"
 pe2="y = -x"
-text1="This is a graph of both "+ pe + " (black) \
-                \nand "+ pe2 + " (blue).\n\nAll of the points on the black line\nhave the same x-coordinate and y-coordinate;\
+text1="This is a graph of both "+ pe + " (black)"\
+                "\nand "+ pe2 + " (blue).\n\nAll of the points on the black line\nhave the same x-coordinate and y-coordinate;\
                  \nfor example, (1,1) and (-3,-3).\
                  \n\nIn all of the points on the blue line, \
                  \nthe y-coordinate has the opposite sign of the x-coordinate;\
@@ -292,7 +301,7 @@ m2=random.choice(list1)
 
 mlist=[-1/m2,-m1]
 targeteq1="y = -"+str(m1)+"x"
-targeteq2="y = -(1/"+str(m2)+")x"
+targeteq2="y = -1/"+str(m2)+" x"
 
 targeteqlist=[targeteq2,targeteq1]
 
@@ -322,7 +331,7 @@ while again:
             targeteq="y = -"+str(m)+"x"
             m=-m
         else:
-            targeteq="y = -(1/"+str(m2)+")x"
+            targeteq="y = -1/"+str(m)+" x"
             m=-1/m
 
 
