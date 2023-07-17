@@ -9,3 +9,5 @@ LineEquations3: linear equations varying -m
 
 LineEquations4: linear equations varying both b and m
 
+AbsoluteValueEquations1: absolute value y = |x| +c
+
