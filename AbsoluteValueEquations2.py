@@ -64,14 +64,22 @@ class intrograph:
         x2=np.linspace(0,self.axisdim)
         y1 = abs(x1)
         y2 = abs(x2)
+        x21 =np.linspace(-self.axisdim,-3)
+        x22=np.linspace(-3,self.axisdim)
+        y21 = abs(x21+3)
+        y22 = abs(x22+3)
+        x31 =np.linspace(-self.axisdim,1)
+        x32=np.linspace(1,self.axisdim)
+        y31 = abs(x31-1)
+        y32 = abs(x32-1)
         self.ax1.plot(x1, y1,c='k',lw=1.5, label = pe)
         self.ax1.plot(x2, y2,c='k',lw=1.5)
-        self.ax2.plot(x1, y1+3,c='b',lw=1.5, label="y = |x| + 3")
+        self.ax2.plot(x21, y21,c='b',lw=1.5, label="y = |x+3|")
         self.ax2.plot(x1, y1,c='k',lw=1.5, label=pe)
-        self.ax2.plot(x1, y1-1,c='m',lw=1.5, label="y = |x| - 1")
-        self.ax2.plot(x2, y2+3,c='b',lw=1.5)
+        self.ax2.plot(x31, y31,c='m',lw=1.5, label="y = |x-1|")
+        self.ax2.plot(x22, y22,c='b',lw=1.5)
         self.ax2.plot(x2, y2,c='k',lw=1.5,)
-        self.ax2.plot(x2, y2-1,c='m',lw=1.5)
+        self.ax2.plot(x32, y32,c='m',lw=1.5)
 
         #set up legend
         self.ax1.legend(loc="lower right")
@@ -80,7 +88,7 @@ class intrograph:
         #set up text
         self.ax1.text(-5,6,text1)
         self.ax2.text(-5,6,text2)
-        self.ax2.text(-5,-6.5,text3)
+        self.ax2.text(-5,-7,text3)
 
         #display
         plt.show()
@@ -134,14 +142,16 @@ class taskgraph:
         #set up lines putting label here used in legend
         x1 =np.linspace(-self.axisdim,0)
         x2=np.linspace(0,self.axisdim)
+        x21 =np.linspace(-self.axisdim,-self.c)
+        x22=np.linspace(-self.c,self.axisdim)
         y1 = abs(x1)
         y2 = abs(x2)
-        y3 = abs(x1) + self.c
-        y4 = abs(x2) + self.c
+        y3 = abs(x21+ self.c) 
+        y4 = abs(x22+ self.c)
         self.ax.plot(x1, y1,c='k',lw=1.5,label = pe)
-        self.ax.plot(x1, y3,c='r',lw=1.5,label = "y = ?")
+        self.ax.plot(x21, y3,c='r',lw=1.5,label = "y = ?")
         self.ax.plot(x2, y2,c='k',lw=1.5)
-        self.ax.plot(x2, y4,c='r',lw=1.5)
+        self.ax.plot(x22, y4,c='r',lw=1.5)
 
         #set up legend
         self.ax.legend(loc="lower right")
@@ -202,23 +212,27 @@ class guessgraph:
         #set up lines putting label here used in legend
         x1 =np.linspace(-self.axisdim,0)
         x2=np.linspace(0,self.axisdim)
+        x21 =np.linspace(-self.axisdim,-self.c)
+        x22=np.linspace(-self.c,self.axisdim)
         y1 = abs(x1)
         y2 = abs(x2)
-        y3 = abs(x1) + self.c
-        y4 = abs(x2) + self.c
+        y3 = abs(x21+ self.c)
+        y4 = abs(x22+ self.c)
         self.ax.plot(x1, y1,c='k',lw=1.5,label = pe)
         self.ax.plot(x2, y2,c='k',lw=1.5)
         
         if self.answer:  
-            self.ax.plot(x1, y3,c='r',lw=3.5,label = self.targeteq)
-            self.ax.plot(x2, y4,c='r',lw=3.5)
+            self.ax.plot(x21, y3,c='r',lw=3.5,label = self.targeteq)
+            self.ax.plot(x22, y4,c='r',lw=3.5)
         else:
-            self.ax.plot(x1, y3,c='r',lw=1.5,label = "y = ?")
-            self.ax.plot(x2, y4,c='r',lw=1.5)
+            self.ax.plot(x21, y3,c='r',lw=1.5,label = "y = ?")
+            self.ax.plot(x22, y4,c='r',lw=1.5)
         
         for idx in range(len(guessc)):
-            self.ax.plot(x1, abs(x1)+guessc[idx],c=colors[idx],lw=1.5,label = guesseq[idx])
-            self.ax.plot(x2, abs(x2)+guessc[idx],c=colors[idx],lw=1.5)
+            x31 =np.linspace(-self.axisdim,-guessc[idx])
+            x32=np.linspace(-guessc[idx],self.axisdim)
+            self.ax.plot(x31, abs(x31+guessc[idx]),c=colors[idx],lw=1.5,label = guesseq[idx])
+            self.ax.plot(x32, abs(x32+guessc[idx]),c=colors[idx],lw=1.5)
 
         #set up legend
         self.ax.legend(loc="lower right")
@@ -232,25 +246,28 @@ class guessgraph:
 
 def geteq():
     errortext=f"Equations should follow the format\
-        \n      y = |x| + c    or    y = |x| - c\nwhere c is an integer between 1 and 9.\
+        \n      y = |x + d|    or    y = |x - d| \nwhere d is an integer between 1 and 9.\
         \n (The | key is typically on the keyboard between the Enter and Backspace keys.)\n"
     while True:
         userin=input("The equation of the red graph could be:")
         print("\n")
         userin2="".join(userin.split())
         userin2=userin2.lower()
-        if len(userin2)<5 or userin2[:5]!= "y=|x|":
+        if len(userin2)<4 or userin2[:4]!= "y=|x":
             print(errortext)
             continue
-        if len(userin2)<6 or (userin2[5]!="+" and userin2[5]!="-"):
+        if len(userin2)<5 or (userin2[4]!="+" and userin2[4]!="-"):
             print(errortext)
             continue
-        c=userin2[6:]
+        c=userin2[5]
         if not c.isnumeric():
             print(errortext)
             continue
-        c=int(userin2[5:])
+        c=int(userin2[4:6])
         if not (-9<=c<=-1 or 1<=c<=9):
+            print(errortext)
+            continue
+        if userin2[6]!='|' or userin2[7:]!="":
             print(errortext)
             continue
         return c,userin
@@ -279,7 +296,8 @@ text1="This is a graph of "+ pe + ".\n\nAll of the points on the right side of t
                    \nfor example, (-3,3).  This is part of the line y = -x."
 text2="If we move the graph,\nthe x- and y-coordinates of the points are no longer the same.\
                  \n\nThis means that the equation of the new line cannot be "+ pe +"."
-text3="The equation changes by " + r"$\bf{"+ 'adding' +"}$" +" or "+ r"$\bf{"+ 'subtracting' +"}$" + " a number from |x|.\
+text3="The equation changes by " + r"$\bf{"+ 'adding' +"}$" +" or "+ r"$\bf{"+ 'subtracting' +"}$" + " a number\
+                 \n from x inside of the absolute value.\
                  \n\nClose this graph window when you are ready to move on."
 
 
@@ -319,9 +337,9 @@ while again:
         while c==0:
             c=random.randrange(-9, 9)
         if c>0:
-            targeteq="y = |x| + "+str(c)
+            targeteq="y = |x + "+str(c)+"|"
         else:
-            targeteq="y = |x| - "+str(-c)
+            targeteq="y = x - "+str(-c)+"|"
 
     #set up taskgraph
     g2=taskgraph(c,scale,text1,text2)
