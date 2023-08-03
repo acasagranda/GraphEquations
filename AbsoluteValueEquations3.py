@@ -64,22 +64,18 @@ class intrograph:
         x2=np.linspace(0,self.axisdim)
         y1 = abs(x1)
         y2 = abs(x2)
-        x21 =np.linspace(-self.axisdim,-3)
-        x22=np.linspace(-3,self.axisdim)
-        y21 = abs(x21+3)
-        y22 = abs(x22+3)
-        x31 =np.linspace(-self.axisdim,1)
-        x32=np.linspace(1,self.axisdim)
-        y31 = abs(x31-1)
-        y32 = abs(x32-1)
+        x21 =np.linspace(-self.axisdim,2)
+        x22=np.linspace(2,self.axisdim)
+        y21 = abs(x21-2)+1
+        y22 = abs(x22-2)+1
+        
         self.ax1.plot(x1, y1,c='k',lw=1.5, label = pe)
         self.ax1.plot(x2, y2,c='k',lw=1.5)
-        self.ax2.plot(x21, y21,c='b',lw=1.5, label="y = |x+3|")
+        self.ax2.plot(x21, y21,c='b',lw=1.5, label="y = |x-2| + 1")
         self.ax2.plot(x1, y1,c='k',lw=1.5, label=pe)
-        self.ax2.plot(x31, y31,c='m',lw=1.5, label="y = |x-1|")
         self.ax2.plot(x22, y22,c='b',lw=1.5)
         self.ax2.plot(x2, y2,c='k',lw=1.5,)
-        self.ax2.plot(x32, y32,c='m',lw=1.5)
+     
 
         #set up legend
         self.ax1.legend(loc="lower right")
@@ -88,7 +84,7 @@ class intrograph:
         #set up text
         self.ax1.text(-5,6,text1)
         self.ax2.text(-5,6,text2)
-        self.ax2.text(-5,-7,text3)
+        self.ax2.text(-5,-6,text3)
 
         #display
         plt.show()
@@ -96,8 +92,9 @@ class intrograph:
 
 class taskgraph:
     
-    def __init__(self,c,scale,text1,text2):
+    def __init__(self,c,d,scale,text1,text2):
         self.c=c
+        self.d=d
         self.scale=scale
         self.text1=text1
         self.text2=text2
@@ -106,7 +103,7 @@ class taskgraph:
         self.axisdim=self.scale*10+10
 
         #make to columns of graphs
-        self.fig, (self.ax,self.textarea) = plt.subplots(1,2,figsize=(13,13))
+        self.fig, (self.ax,self.textarea) = plt.subplots(1,2,figsize=(15,15))
 
         #set up axes
         self.ax.set(xlim=(-self.axisdim, self.axisdim), ylim=(-self.axisdim, self.axisdim), aspect='equal')
@@ -146,8 +143,8 @@ class taskgraph:
         x22=np.linspace(-self.c,self.axisdim)
         y1 = abs(x1)
         y2 = abs(x2)
-        y3 = abs(x21+ self.c) 
-        y4 = abs(x22+ self.c)
+        y3 = abs(x21+ self.c)+self.d
+        y4 = abs(x22+ self.c)+self.d
         self.ax.plot(x1, y1,c='k',lw=1.5,label = pe)
         self.ax.plot(x21, y3,c='r',lw=1.5,label = "y = ?")
         self.ax.plot(x2, y2,c='k',lw=1.5)
@@ -163,16 +160,17 @@ class taskgraph:
 
 class guessgraph:
     
-    def __init__(self,c,targeteq,scale):
+    def __init__(self,c,d,targeteq,scale):
         self.targeteq = targeteq
         self.c=c
+        self.d=d
         self.scale=scale
 
         #set up size of graph
         self.axisdim=self.scale*10+10
 
         #make to columns of graphs
-        self.fig, (self.ax,self.textarea) = plt.subplots(1,2,figsize=(13,13))
+        self.fig, (self.ax,self.textarea) = plt.subplots(1,2,figsize=(15,15))
 
         #set up axes
         self.ax.set(xlim=(-self.axisdim, self.axisdim), ylim=(-self.axisdim, self.axisdim), aspect='equal')
@@ -213,11 +211,11 @@ class guessgraph:
         x1 =np.linspace(-self.axisdim,0)
         x2=np.linspace(0,self.axisdim)
         x21 =np.linspace(-self.axisdim,-self.c)
-        x22=np.linspace(-self.c,self.axisdim)
+        x22 =np.linspace(-self.c,self.axisdim)
         y1 = abs(x1)
         y2 = abs(x2)
-        y3 = abs(x21+ self.c)
-        y4 = abs(x22+ self.c)
+        y3 = abs(x21+ self.c)+self.d
+        y4 = abs(x22+ self.c)+self.d
         self.ax.plot(x1, y1,c='k',lw=1.5,label = pe)
         self.ax.plot(x2, y2,c='k',lw=1.5)
         
@@ -231,8 +229,8 @@ class guessgraph:
         for idx in range(len(guessc)):
             x31 =np.linspace(-self.axisdim,-guessc[idx])
             x32=np.linspace(-guessc[idx],self.axisdim)
-            self.ax.plot(x31, abs(x31+guessc[idx]),c=colors[idx],lw=1.5,label = guesseq[idx])
-            self.ax.plot(x32, abs(x32+guessc[idx]),c=colors[idx],lw=1.5)
+            self.ax.plot(x31, abs(x31+guessc[idx])+guessd[idx],c=colors[idx],lw=1.5,label = guesseq[idx])
+            self.ax.plot(x32, abs(x32+guessc[idx])+guessd[idx],c=colors[idx],lw=1.5)
 
         #set up legend
         self.ax.legend(loc="lower right")
@@ -246,14 +244,14 @@ class guessgraph:
 
 def geteq():
     errortext=f"Equations should follow the format\
-        \n      y = |x + d|    or    y = |x - d| \nwhere d is an integer between 1 and 9.\
+        \n      y = |x + c| + d     \nwhere d is an integer between -9 and 9.\
         \n (The | key is typically on the keyboard between the Enter and Backspace keys.)\n"
     while True:
         userin=input("The equation of the red graph could be:")
         print("\n")
         userin2="".join(userin.split())
         userin2=userin2.lower()
-        if len(userin2)<4 or userin2[:4]!= "y=|x":
+        if len(userin2)>9 or len(userin2)<4 or userin2[:4]!= "y=|x":
             print(errortext)
             continue
         if len(userin2)<5 or (userin2[4]!="+" and userin2[4]!="-"):
@@ -264,13 +262,25 @@ def geteq():
             print(errortext)
             continue
         c=int(userin2[4:6])
-        if not (-9<=c<=-1 or 1<=c<=9):
+        if not (-9<=c<=9):
             print(errortext)
             continue
-        if userin2[6]!='|' or userin2[7:]!="":
+        if userin2[6]!='|':
             print(errortext)
             continue
-        return c,userin
+        if len(userin2)<9 or (userin2[7]!="+" and userin2[7]!="-"):
+            print(errortext)
+            continue
+        d=userin2[8]
+        if not d.isnumeric():
+            print(errortext)
+            continue
+        d=int(userin2[7:9])
+        if not (-9<=d<=9):
+            print(errortext)
+            continue
+
+        return c,d,userin
 
 def getagain():
     ans=input("Do you want to start a new challenge? Type y or n:")
@@ -286,7 +296,7 @@ def getagain():
 
 
 #set up colors of guesses
-colors=['darkviolet','blue','deepskyblue','lime','yellow','orange']
+colors=['violet','darkviolet','blue','deepskyblue','green','chartreuse','yellow','orange']
 
 #set up parent equation and texts for intrograph
 pe="y = |x|"
@@ -294,11 +304,11 @@ text1="This is a graph of "+ pe + ".\n\nAll of the points on the right side of t
                  \nfor example, (1,1).  This is part of the line y = x.\
                   \n\nAll of the points on the left hand side\nhave a y-coordinate that is the positive of the x-coordinate;\
                    \nfor example, (-3,3).  This is part of the line y = -x."
-text2="If we move the graph,\nthe x- and y-coordinates of the points are no longer the same.\
-                 \n\nThis means that the equation of the new line cannot be "+ pe +"."
-text3="The equation changes by " + r"$\bf{"+ 'adding' +"}$" +" or "+ r"$\bf{"+ 'subtracting' +"}$" + " a number\
-                 \n from x inside of the absolute value.\
-                 \n\nClose this graph window when you are ready to move on."
+text2="If we move it, the equation of the new graph cannot be "+ pe +".\
+                \n\nThe equation changes by adding or subtracting a number from x\
+                 \n     inside of the absolute value\n" + r"$\bf{"+ 'and' +"}$" +\
+                " adding or subtracting a number\n     outside the absolute value."
+text3="Close this graph window when you are ready to move on."
 
 
 g1=intrograph()
@@ -306,14 +316,15 @@ g1.show()
 
 
 #choose c of first and second target lines
-list1 = [4, 5, 6,7,8,9]
-c1=random.choice(list1)
-list1.remove(c1)
-c2=-random.choice(list1)
-clist=[c2,c1]
-targeteq1="y = |x| + "+str(c1)
-targeteq2="y = |x| - "+str(-c2)
-targeteqlist=[targeteq2,targeteq1]
+list1 = [3,4,5,6,7,8,9]
+c=-random.choice(list1)
+list1.remove(-c)
+d=random.choice(list1)
+clist=[c]
+dlist=[d]
+targeteq="y = |x + "+str(-c) +" | + "+str(d)
+
+
 
 #set up texts for taskgraph
 text1="The "+ r"$\bf{"+ 'black' +"}$" + f" graph to the left is the \'parent\' function " + pe +"."
@@ -331,18 +342,26 @@ while again:
     scale=random.random()
     if clist:
         c=clist.pop()
-        targeteq=targeteqlist.pop()
+        d=dlist.pop()
+        
     else:
-        c=random.randrange(-9, 9)
+        c=0
         while c==0:
             c=random.randrange(-9, 9)
-        if c>0:
-            targeteq="y = |x + "+str(c)+"|"
+        d=0
+        while d==0:
+            d=random.randrange(-9, 9)
+        if c>0 and d>0:
+            targeteq="y = |x + "+str(c)+"| + "+str(d)
+        elif c>0 and d<0:
+            targeteq="y = |x + "+str(c)+"| - "+str(-d)
+        elif c<0 and d<0:
+            targeteq="y = |x - "+str(-c)+"| - "+str(-d)
         else:
-            targeteq="y = |x - "+str(-c)+"|"
+            targeteq="y = |x - "+str(-c)+"| + "+str(d)
 
     #set up taskgraph
-    g2=taskgraph(c,scale,text1,text2)
+    g2=taskgraph(c,d,scale,text1,text2)
     g2.show()
 
     #set up texts for guessgraph
@@ -350,28 +369,30 @@ while again:
     text4="Close the graph window and enter your next guess in the terminal."
 
 
-    #user can take up to 7 guesses - last one answer is revealed
+    #user can take up to 9 guesses - last one answer is revealed
     guessc=[]
+    guessd=[]
     guesseq=[]
-    for turn in range(7):
-        userc,usereq=geteq()
+    for turn in range(9):
+        userc,userd,usereq=geteq()
 
-        if userc==c:
+        if userc==c and userd==d:
             found=True
             text5="That is correct!! \n\nThe red graph has the equation "+usereq
             text6="Close the graph window when you are ready to move on."
-            g3=guessgraph(c,usereq,scale)
+            g3=guessgraph(c,d,usereq,scale)
             g3.show(text5,text6,True)
             break
-        elif turn!=6:
+        elif turn!=8:
             guessc.append(userc)
+            guessd.append(userd)
             guesseq.append(usereq)
-            g3=guessgraph(c,targeteq,scale)
+            g3=guessgraph(c,d,targeteq,scale)
             g3.show(text3,text4,False)
         else:
             text7="The red graph has the equation "+targeteq
             text8="Close the graph window when you are ready to move on."
-            g3=guessgraph(c,targeteq,scale)
+            g3=guessgraph(c,d,targeteq,scale)
             g3.show(text7,text8,True)
     again=getagain()
 
