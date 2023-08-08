@@ -15,3 +15,4 @@ AbsoluteValueEquations2: absolute value y = |x + d|
 
 AbsoluteValueEquations3: absolute value y = |x + d| + c
 
+AbsoluteValueEquations4: absolute value y = +m |x|
